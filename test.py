@@ -18,21 +18,23 @@ class PacketBuilderReader(unittest.TestCase):
         ]
         values = range(255)
 
+        # Try all combinations of 4 values to check that
+        # reader and builder can build and read the same thing
         for type in types:
             for id in ids:
                 for command in commands:
                     for value in values:
-
+                        # get builder and set data in packet
                         builder = packet.CommandPacketBuilder()
                         builder.set_type(type)
                         builder.set_id(id)
                         builder.set_command(command)
                         builder.set_value(value)
-
+                        # create packet
                         output = builder.create()
-
+                        # get reader and read the data
                         reader = packet.CommandPacketReader(output)
-
+                        # check if created data and readed data are matched
                         self.assertEqual(type, reader.get_type())
                         self.assertEqual(id, reader.get_id())
                         self.assertEqual(command, reader.get_command())
