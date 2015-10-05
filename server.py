@@ -10,10 +10,10 @@ import sys
 
 def handler(s, addr):
 
-    print("Handling reqeust")
+    print("Handling request")
 
     # get request packet
-    request_packet = s.recv(2)
+    request_packet = packet.read_command(s)
 
     packet_reader = packet.CommandPacketReader(request_packet)
 
@@ -38,8 +38,7 @@ def handler(s, addr):
     reply_packet = packet_builder.create()
 
     # send acknowledge packet back to phone
-    s.send(bytes((reply_packet[0], )))
-    s.send(bytes((reply_packet[1], )))
+    s.sendall(bytes((reply_packet[0], reply_packet[1])))
 
     packet_builder.report()
 

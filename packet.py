@@ -1,5 +1,16 @@
 __author__ = 'hibiki'
 
+import struct
+
+'''
+ Provide Builder and Reader for reading and creting packets.
+
+ Compose of ..
+  - Utility functions
+  - Builder class
+  - Reader class
+
+'''
 
 # Define constants for packet type
 REQ_TYPE = 0
@@ -45,6 +56,31 @@ COMMANDS = {
     7: 'COMMAND_LEFT',
     8: 'COMMAND_UPLEFT'
 }
+
+
+'''
+    Utility function
+    [0] Continue reading for command until get the complete one.
+'''
+def read_command(s):
+    byte_count = 0
+    command_packet = bytearray()
+    # keep reading until get 2 byte (complete command packet)
+    while byte_count < 2:
+        partial = s.recv(1)
+        if len(partial) == 1:
+            command_packet.append(byte_to_int(partial))
+            byte_count += 1
+    # return
+    return command_packet
+
+
+'''
+    Utility function
+    [1] Convert byte into integer
+'''
+def byte_to_int(byte):
+    return struct.unpack("B", byte)[0]
 
 
 class CommandPacketBuilder:
@@ -132,6 +168,7 @@ class CommandPacketReader:
             TYPES.get(self.type), IDS.get(self.id),
             COMMANDS.get(self.command), str(self.value)
         ]))
+
 
     def _read(self):
 
