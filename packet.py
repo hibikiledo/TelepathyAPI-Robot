@@ -5,11 +5,23 @@ __author__ = 'hibiki'
 REQ_TYPE = 0
 ACK_TYPE = 1
 
+TYPES = {
+    0: 'REQ_TYPE',
+    1: 'ACK_TYPE'
+}
+
 # Define constants for IDs
 ID_0 = 0
 ID_1 = 1
 ID_2 = 2
 ID_3 = 3
+
+IDS = {
+    0: 'ID_0',
+    1: 'ID_1',
+    2: 'ID_2',
+    3: 'ID_3',
+}
 
 # Define constants for Commands
 COMMAND_NONE = 0
@@ -21,6 +33,18 @@ COMMAND_DOWN = 5
 COMMAND_DOWNLEFT = 6
 COMMAND_LEFT = 7
 COMMAND_UPLEFT = 8
+
+COMMANDS = {
+    0: 'COMMAND_NONE',
+    1: 'COMMAND_UP',
+    2: 'COMMAND_UPRIGHT',
+    3: 'COMMAND_RIGHT',
+    4: 'COMMAND_DOWNRIGHT',
+    5: 'COMMAND_DOWN',
+    6: 'COMMAND_DOWNLEFT',
+    7: 'COMMAND_LEFT',
+    8: 'COMMAND_UPLEFT'
+}
 
 
 class CommandPacketBuilder:
@@ -42,6 +66,12 @@ class CommandPacketBuilder:
 
     def set_value(self, value):
         self.value = value
+
+    def report(self):
+        print(': '.join([
+            TYPES.get(self.type), IDS.get(self.id),
+            COMMANDS.get(self.command), str(self.value)
+        ]))
 
     def create(self):
 
@@ -97,14 +127,20 @@ class CommandPacketReader:
     def get_value(self):
         return self.value
 
+    def report(self):
+        print(': '.join([
+            TYPES.get(self.type), IDS.get(self.id),
+            COMMANDS.get(self.command), str(self.value)
+        ]))
+
     def _read(self):
 
         # handle Packet types
         # Perform AND operation with received high-byte
         # and check for equality
-        if self.high_byte & int('10000000', 2) == int('10000000', 2):
+        if self.high_byte & int('11000000', 2) == int('10000000', 2):
             self.type = REQ_TYPE
-        elif self.high_byte & int('01000000', 2) == int('01000000', 2):
+        elif self.high_byte & int('11000000', 2) == int('01000000', 2):
             self.type = ACK_TYPE
 
         # handle IDs
@@ -118,4 +154,3 @@ class CommandPacketReader:
         # handle Value
         # Copy value over
         self.value = self.low_byte
-
