@@ -8,79 +8,56 @@ import getopt
 import sys
 
 
-def handler(s, addr):
+class CommandServer:
 
-    print("Handling request")
-
-    # get request packet
-    request_packet = packet.read_command(s)
-
-    packet_reader = packet.CommandPacketReader(request_packet)
-
-    # extract information
-    type    = packet_reader.get_type()
-    id      = packet_reader.get_id()
-    command = packet_reader.get_command()
-    value   = packet_reader.get_value()
-
-    packet_reader.report()
-
-    # Todo : Pass to robot handler
-
-    # send ACK and mirror request message
-    packet_builder = packet.CommandPacketBuilder()
-    packet_builder.set_type(packet.ACK_TYPE)
-    packet_builder.set_id(id)
-    packet_builder.set_command(command)
-    packet_builder.set_value(value)
-
-    # create respond packet
-    reply_packet = packet_builder.create()
-
-    # send acknowledge packet back to phone
-    s.sendall(bytes((reply_packet[0], reply_packet[1])))
-
-    packet_builder.report()
-
-    # close socket
-    s.close()
+    def __init__(self, host, port, dispatcher):
+        self.dispatcher = dispatcher
+        self.host = host
+        self.port = port
 
 
+    def handler(self, client_socket, address):
 
-def start_server(HOST, PORT):
-    server_socket = eventlet.listen((HOST, PORT))
-    thread_pool = eventlet.GreenPool(10)
-    while True:
-        clientsocket, addr = server_socket.accept()
-        thread_pool.spawn_n(handler, clientsocket, addr)
+        print("Handling request")
 
-def usage():
-    print("Usage ...")
-    print("python3 server.py -h <host> -p <port>")
-    print("Example: python3 server.py -h 0.0.0.0 -p 5000")
+        # get request packet
+        request_packet = packet.read_command(client_socket)
 
-def main(argv):
+        packet_reader = packet.CommandPacketReader(request_packet)
 
-    HOST = '0.0.0.0'
-    PORT = 5000
+        # extract information
+        type    = packet_reader.get_type()
+        id      = packet_reader.get_id()
+        command = packet_reader.get_command()
+        value   = packet_reader.get_value()
 
-    try:
-        opts, args = getopt.getopt(argv, "h:p:", ['host=', 'port='])
-    except getopt.GetoptError:
-        usage()
-        sys.exit(2)
+        packet_reader.report()
 
-    # Use user specified host and port if exist
-    for opt, arg in opts:
-        if opt in ('-h', '--host'):
-            HOST = arg
-        elif opt in ('-p', '--port'):
-            PORT = arg
+        # Let dispatcher dispatch command
+        self.dispatcher.handle(command, value)
 
-    # Start our server
-    start_server(HOST, PORT)
+        # send ACK and mirror request message
+        packet_builder = packet.CommandPacketBuilder()
+        packet_builder.set_type(packet.ACK_TYPE)
+        packet_builder.set_id(id)
+        packet_builder.set_command(command)
+        packet_builder.set_value(value)
+
+        # create respond packet
+        reply_packet = packet_builder.create()
+
+        # send acknowledge packet back to phone
+        client_socket.sendall(bytes((reply_packet[0], reply_packet[1])))
+
+        packet_builder.report()
+
+        # close socket
+        client_socket.close()
 
 
-if __name__ == '__main__':
-    main(sys.argv[1:])
-
+    def start_server(self):
+        self.server_socket = eventlet.listen((self.host, self.port))
+        thread_pool = eventlet.GreenPool(10)
+        while True:
+            clientsocket, addr = self.server_socket.accept()
+            thread_pool.spawn_n(self.handler, clientsocket, addr)
