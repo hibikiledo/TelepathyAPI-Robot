@@ -82,7 +82,10 @@ def read_command(s):
 def byte_to_int(byte):
     return struct.unpack("B", byte)[0]
 
-
+'''
+ Build command as a tuple of high byte and low byte
+ Return type is integer
+'''
 class CommandPacketBuilder:
 
     def __init__(self):
