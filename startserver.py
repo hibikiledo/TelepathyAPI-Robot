@@ -5,6 +5,9 @@ import server
 import packet
 import robot
 
+# Initialize robot script
+robot.init_gpio()
+
 # Create a dispatcher
 d = dispatcher.Dispatcher()
 
