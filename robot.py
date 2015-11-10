@@ -1,6 +1,8 @@
+# __author__ = 'tappasarn'
 
 import RPi.GPIO as GPIO
 import time
+from RPIO import PWM
 
 # same command set as nut's module
 COMMAND_NONE = 0
@@ -15,14 +17,14 @@ COMMAND_UPLEFT = 8
 
 # set up gpio variable here
 
-servo = 18
+servo_port = 18
 motor = 13
 motor_control_a = 17
 motor_control_b = 27
 
 pwm = None
 motor_pwm = None
-
+servo = None
 # Below here are top level method
 
 
@@ -31,12 +33,11 @@ def init_gpio():
 
     global pwm
     global motor_pwm
+    global servo
     GPIO.setmode(GPIO.BCM)
 
     # set up servo
-    GPIO.setup(servo, GPIO.OUT)
-    pwm = GPIO.PWM(servo, 50)
-    pwm.start(0)
+    servo = PWM.Servo()
 
     # set up enable for motor
     GPIO.setup(motor, GPIO.OUT)
@@ -53,8 +54,8 @@ def move_forward(value):
     servo_direction(2)
     motor_direction(1)
     motor_pwm.ChangeDutyCycle(value)
-
-
+    
+    
 def move_forward_servo_left(value):
     servo_direction(1)
     motor_direction(1)
@@ -87,36 +88,36 @@ def move_backward_servo_right(value):
 
 
 # command set for controlling servo
-def turn_servo_left():
+def turn_servo_left(value):
     servo_direction(1)
 
 
-def turn_servo_right():
+def turn_servo_right(value):
     servo_direction(3)
 
 
-def turn_servo_middle():
+def turn_servo_middle(value):
     servo_direction(2)
 
 
 # stop
-def stop():
+def stop(value):
     motor_pwm.ChangeDutyCycle(0)
     servo_direction(2)
-
 
 # below here will not be top level method
 # set degree of servo
 def servo_direction(direction):
+    global servo
     # 1 is left, 2 is middle, 3 is right
     if direction == 1:
-        pwm.ChangeDutyCycle(5)
+        servo.set_servo(servo_port, 1100)
 
     elif direction == 2:
-        pwm.ChangeDutyCycle(8.5)
+        servo.set_servo(servo_port, 1500)
 
     elif direction == 3:
-        pwm.ChangeDutyCycle(12)
+        servo.set_servo(servo_port, 1900)
 
 
 # method to switch the direction of motor
