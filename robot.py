@@ -1,4 +1,3 @@
-
 import RPi.GPIO as GPIO
 import time
 
@@ -31,6 +30,7 @@ def init_gpio():
 
     global pwm
     global motor_pwm
+
     GPIO.setmode(GPIO.BCM)
 
     # set up servo

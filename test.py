@@ -1,5 +1,3 @@
-__author__ = 'hibiki'
-
 import unittest
 
 import packet
@@ -9,7 +7,7 @@ class PacketBuilderReader(unittest.TestCase):
     def test_build_and_read(self):
 
         # Create test data
-        types = [packet.REQ_TYPE, packet.ACK_TYPE]
+        types = [packet.REQ_M_TYPE, packet.ACK_M_TYPE, packet.REQ_A_TYPE, packet.ACK_A_TYPE]
         ids = [packet.ID_0, packet.ID_1, packet.ID_2, packet.ID_3]
         commands = [
             packet.COMMAND_NONE, packet.COMMAND_UP, packet.COMMAND_UPRIGHT,
