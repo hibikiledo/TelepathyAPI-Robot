@@ -16,7 +16,6 @@ COMMAND_LEFT = 7
 COMMAND_UPLEFT = 8
 
 # set up gpio variable here
-
 servo_port = 18
 motor = 13
 motor_control_a = 17
@@ -25,8 +24,8 @@ motor_control_b = 27
 pwm = None
 motor_pwm = None
 servo = None
-# Below here are top level method
 
+# Below here are top level method
 
 # call this method to init gpio port that we need to use
 def init_gpio():
@@ -48,13 +47,11 @@ def init_gpio():
     GPIO.setup(motor_control_a, GPIO.OUT)
     GPIO.setup(motor_control_b, GPIO.OUT)
 
-
 # command set for robot to move forward
 def move_forward(value):
     servo_direction(2)
     motor_direction(1)
     motor_pwm.ChangeDutyCycle(value)
-    
     
 def move_forward_servo_left(value):
     servo_direction(1)
@@ -110,15 +107,14 @@ def stop(value):
 def servo_direction(direction):
     global servo
     # 1 is left, 2 is middle, 3 is right
-    if direction == 1:
+    if direction == 3:
         servo.set_servo(servo_port, 1100)
 
     elif direction == 2:
         servo.set_servo(servo_port, 1500)
 
-    elif direction == 3:
+    elif direction == 1:
         servo.set_servo(servo_port, 1900)
-
 
 # method to switch the direction of motor
 def motor_direction(direction):

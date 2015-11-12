@@ -42,8 +42,8 @@ class compass_work:
 
 
     def get_value(self):
-        x_offset = 50
-        y_offset = -77
+        x_offset = 178
+        y_offset = 4
         x_out = (self.read_word_2c(3) - x_offset) * self.scale
         y_out = (self.read_word_2c(7) - y_offset) * self.scale
         z_out = (self.read_word_2c(5)) * self.scale
@@ -57,4 +57,3 @@ class compass_work:
         
         print("Bearing: ", math.degrees(bearing))
         return math.degrees(bearing)
-        

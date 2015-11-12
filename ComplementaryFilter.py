@@ -1,5 +1,5 @@
-import accelerometer
-import gyro
+from sensors import accelerometer
+from sensors import gyro
 import math
 import time
 
@@ -83,10 +83,10 @@ class ComplementaryFilter:
 
         return int(self.last_x), int(self.last_y)
 
-# simulate main
+#simulate main
 #myFilter = ComplementaryFilter()
 #myFilter.initual_filter_compute()
 
 #while True:
-#    myFilter.filter_compute()
-    
+#    x,y=myFilter.filter_compute()
+#    print ("x => ",x,"y=> ",y)

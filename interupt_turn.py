@@ -1,4 +1,4 @@
-import compass_work
+from sensors import compass_work
 def turn_thread(new_angle, stop):
     myCompass = compass_work.compass_work()
     myCompass.set_value()
@@ -10,6 +10,6 @@ def turn_thread(new_angle, stop):
         print ("this is needed angle = ", int(new_angle))
         print ("this is the angle u heading = ", int(current_angle))
 
-        if (int(current_angle) < int(new_angle+2)) and (int(current_angle) > int(new_angle-2)):            
+        if (int(current_angle) < int(new_angle+15)) and (int(current_angle) > int(new_angle-15)):            
             stop(0)
             break

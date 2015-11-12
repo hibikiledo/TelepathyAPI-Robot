@@ -1,4 +1,4 @@
-from i2clibraries import i2c_adxl345
+from sensors.i2clibraries import i2c_adxl345
 from time import *
 
 class Accelerometer:

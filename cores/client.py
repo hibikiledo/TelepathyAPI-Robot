@@ -1,5 +1,3 @@
-__author__ = 'hibiki'
-
 import eventlet
 
 import packet

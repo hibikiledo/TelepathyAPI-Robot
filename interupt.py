@@ -1,4 +1,6 @@
 import RPi.GPIO as GPIO
+import interupt_cali
+
 
 def dist_thread(dist,stop):
     # keep signal at 0 and wait for signal 1 to arrive
@@ -18,8 +20,10 @@ def dist_thread(dist,stop):
             print ("total distance the robot run", distance)
             print ("total distance left to finish task", dist)
             if int(dist) <= 0:
+                interupt_cali.running = False
                 stop(0)
-                break  
+                break
+                  
         except KeyboardInterrupt:
             GPIO.cleanup()       # clean up GPIO on CTRL+C exit
        # GPIO.cleanup()           # clean up GPIO on normal exit
