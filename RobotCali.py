@@ -20,13 +20,13 @@ def calibrate(x_value):
     global current_ms
  
     # case one servo shift left
-    if x_value > 5:
+    if x_value > 6:
         current_ms -= 10
         print ("shift left -- > right", current_ms)
         servo.set_servo(servo_port,current_ms)
 
     # case two servo shift right
-    elif x_value < -5:
+    elif x_value < -6:
         current_ms += 10
         print ("shift right --> left", current_ms)
         servo.set_servo(servo_port,current_ms)
@@ -43,7 +43,7 @@ while True:
 
         print("here is my x", x_value)
        
-        if x_value > 8 or x_value < -8:           
+        if x_value > 5 or x_value < -5:           
          # we have to calibrate the robot
             calibrate(x_value)
 

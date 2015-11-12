@@ -15,10 +15,11 @@ def dist_thread(dist,stop):
             dist -= 6.283
 
             print ("total number of times sensors pass hole", count)
-            print ("total distance", distance)
-            print ("this is DIST", dist)
+            print ("total distance the robot run", distance)
+            print ("total distance left to finish task", dist)
             if int(dist) <= 0:
-                stop(0)  
+                stop(0)
+                break  
         except KeyboardInterrupt:
             GPIO.cleanup()       # clean up GPIO on CTRL+C exit
        # GPIO.cleanup()           # clean up GPIO on normal exit
