@@ -1,6 +1,8 @@
 import os
 import pipes
 
+ONE_TIME_MESSAGES = ['ERROR', 'DONE']
+
 class RobotIPC:
 
   def __init__(self, shm_name):
@@ -16,5 +18,14 @@ class RobotIPC:
     os.rename(self.shm_partial_name, self.shm_name)
 
   def read(self):
+    # read current content
     output_file = open(self.shm_name, "r")
-    return output_file.read()
+    content = output_file.read()
+    output_file.close()
+
+    # if message is 'ERROR', reset to healthy
+    if content in ONE_TIME_MESSAGES:
+      self.write("HEALTHY")      
+
+    # return original content anyway, regardless of shm content
+    return content

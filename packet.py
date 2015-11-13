@@ -49,7 +49,7 @@ COMMAND_DOWN        = int('00000101', 2)
 COMMAND_DOWNLEFT    = int('00000110', 2)
 COMMAND_LEFT        = int('00000111', 2)
 COMMAND_UPLEFT      = int('00001000', 2)
-COMMANDS_MASK = int('00001111', 2)
+COMMANDS_MASK       = int('00001111', 2)
 
 COMMANDS = {
     COMMAND_NONE: 'COMMAND_NONE',
@@ -64,15 +64,15 @@ COMMANDS = {
 }
 
 # Define constans for HeartBeat
-HEART_REQ = int('00000000', 2)
-HEART_ACK = int('01000000', 2)
-HEART_OK  = int('10000000', 2)
-HEART_ERR = int('11000000', 2)
+HEART_REQ   = int('00000000', 2)
+HEART_ACK   = int('01000000', 2)
+HEART_DONE  = int('10000000', 2)
+HEART_ERR   = int('11000000', 2)
 
 HEARTS = {
     HEART_REQ: 'HEART_REQ',
     HEART_ACK: 'HEART_ACK',
-    HEART_OK: 'HEART_OK',
+    HEART_DONE: 'HEART_DONE',
     HEART_ERR: 'HEART_ERR'
 }
 

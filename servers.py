@@ -53,11 +53,13 @@ class HeartBeatServer:
 
         # packet_builder.set_type(packet.HEART_ACK)
 
-        # handle DONE | WORKING
+        # handle DONE | WORKING | ERROR
         if content == 'DONE':
             packet_builder.set_type(packet.HEART_OK)
-        elif content == 'WORKING':
+        elif content == 'HEALTHY':
             packet_builder.set_type(packet.HEART_ACK)
+        elif content == 'ERROR':
+            packet_builder.set_type(packet.HEART_ERR)            
 
         # Create packet
         reply_packet = packet_builder.create()
@@ -107,13 +109,13 @@ class CommandServer:
 
         packet_reader.report()
 
-        '''
+        
         # Let dispatcher dispatch command
         if type == packet.REQ_M_TYPE:
             self.m_dispatcher.handle(command, value)
         if type == packet.REQ_A_TYPE:
             self.a_dispatcher.handle(command, value)
-        '''
+        
 
         # send ACK and mirror request message        
         packet_builder = packet.CommandPacketBuilder()
