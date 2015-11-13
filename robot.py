@@ -1,5 +1,3 @@
-# __author__ = 'tappasarn'
-
 import RPi.GPIO as GPIO
 import time
 from RPIO import PWM
